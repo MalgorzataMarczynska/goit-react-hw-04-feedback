@@ -4,25 +4,20 @@ import { Section } from './section/Section.js';
 import { FeedbackOptions } from './feedback/FeedbackOptions.js';
 import { Statistics } from './statistics/Statistics.js';
 export const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-
-  const stateKeys = Array.of('good', 'neutral', 'bad');
-  const stateKeysValues = Array.of(good, neutral, bad);
-  const stateMethods = Array.of(setGood, setNeutral, setBad);
-
+  const [state, setState] = useState({ good: 0, neutral: 0, bad: 0 });
+  const { good, neutral, bad } = state;
   const updateStats = evt => {
-    const rating = evt.target.id;
-    const ratingIndex = stateKeys.findIndex(key => key === rating);
-    //zmiana stanu
-    stateMethods[ratingIndex](stateKeysValues[ratingIndex] + 1);
+    const key = evt.target.id;
+    setState(prevState => ({
+      ...prevState,
+      [key]: Number(prevState[key] + 1),
+    }));
   };
 
   const countTotalFeedback = () => {
-    const totalRatingAmount = stateKeysValues.reduce((total, value) => {
-      return total + value;
-    }, 0);
+    const totalRatingAmount = Object.values(state).reduce(
+      (total, value) => (total += value)
+    );
     return Number(totalRatingAmount);
   };
   const countPositiveFeedbackPercentage = () => {
@@ -39,7 +34,7 @@ export const App = () => {
   return (
     <div>
       <Section title="Please leave feedback">
-        {stateKeys.map(key => (
+        {Object.keys(state).map(key => (
           <FeedbackOptions
             option={key}
             key={key}
