@@ -28,6 +28,10 @@ export const App = () => {
     }
     return;
   };
+  //lub  const total = good + neutral + bad;
+
+  // const countPositiveFeedbackPercentage =
+  //   total > 0 ? Math.round((good / total) * 100) : 0;
   useEffect(() => {
     console.log('some rating has been changed', good, neutral, bad);
   }, [good, neutral, bad]);
